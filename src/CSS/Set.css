@@ -1,0 +1,9 @@
+.focus:hover{
+text-decoration: underline;
+}
+.focus:focus{
+text-decoration: underline;
+}
+i{
+    cursor: pointer;
+}
