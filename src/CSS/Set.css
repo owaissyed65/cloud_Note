@@ -1,9 +1,19 @@
-.focus:hover{
+ .collapse .mx-5.focus:hover{
 text-decoration: underline;
+color: red !important ;
+border: 1px solid black;
 }
-.focus:focus{
-text-decoration: underline;
-}
-i{
+/* .focus:focus{
+    text-decoration: underline;
+}*/
+ i{
     cursor: pointer;
-}
+} 
+/*
+.mx-5{
+    /* margin-left:10rem !important;
+    margin-right:10rem !important; */
+/* display: flex !important;
+text-align: center;
+gap: 0.2rem;
+} */ 
