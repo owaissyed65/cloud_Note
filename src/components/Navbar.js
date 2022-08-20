@@ -4,7 +4,7 @@ import noteContext from '../Context/notes/noteContext';
 import "../CSS/Set.css"
 const Navbar = () => {
     const context = useContext(noteContext)
-    const {updateMode,mode} = context;
+    const { updateMode, mode } = context;
     return (
         <>
             <nav className="navbar navbar-expand-lg sticky-top" style={{ backgroundColor: `${mode.backgroundColor}` }}>
@@ -22,14 +22,12 @@ const Navbar = () => {
                                 <Link className="nav-link" to="/about" style={{ color: `${mode.color}` }}>About</Link>
                             </li>
                         </ul>
-                            <div className="form-check form-switch mx-3 ">
-                                <input className="form-check-input " type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={updateMode} />
-                                <label className="form-check-label" style={{ color: `${mode.color}` }} htmlFor="flexSwitchCheckDefault">{mode.text}</label>
-                            </div>
-                        <form className="d-flex" role="search">
-                            <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                            <button className="btn btn-outline-success" style={{ color: `${mode.color}` }} type="submit">Search</button>
-                        </form>
+                        <div className="form-check form-switch mx-3 ">
+                            <input className="form-check-input " type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={updateMode} />
+                            <label className="form-check-label" style={{ color: `${mode.color}` }} htmlFor="flexSwitchCheckDefault">{mode.text}</label>
+                        </div>
+                        <Link class="btn btn-primary mx-1" to="/login" role="button">Login</Link>
+                        <Link class="btn btn-primary mx-1" to="/signup" role="button">Signup</Link>
                     </div>
                 </div>
             </nav>

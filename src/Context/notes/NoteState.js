@@ -39,9 +39,9 @@ const NoteState = (props) => {
         "authToken": 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjJmN2I4ZjI1YmYyN2FlOGViNTAyYWFkIn0sImlhdCI6MTY2MDQwMTkwNn0.rrcM5uzDAgPSCuK_arjMsB0WdwOzWyGYTli_wF-qcA8'
       },
     });
-    const json = await response.json()
-    console.log(json)
-    setNotes(json)
+    const note = await response.json()
+    console.log(note)
+    setNotes(note)
   }
   // Create a notes
   const addNote = async (title, description, tag,id) => {
@@ -56,17 +56,9 @@ const NoteState = (props) => {
 
       body: JSON.stringify({ title, description, tag })
     });
+    const note =await response.json()
     //logic to add note
-    console.log("Adding a notes")
-    const note = {
-      "_id": id,
-      "user": "62f7b8f25bf27ae8eb502aad3",
-      "title": title,
-      "description": description,
-      "tag": tag,
-      "date": "2022-08-16T13:49:29.071Z",
-      "__v": 0
-    }
+    // console.log("Adding a notes")
     setNotes(notes.concat(note))
 
   }
@@ -74,7 +66,7 @@ const NoteState = (props) => {
   const editNote = async (id, title, description, tag) => {
     // api call
     const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
+      method: 'PUT', // *GET, POST, PUT, DELETE, etc.
 
       headers: {
         'Content-Type': 'application/json',
@@ -84,15 +76,16 @@ const NoteState = (props) => {
       body: JSON.stringify({ title, description, tag })
     });
     const json = response.json(); // parses JSON response into native JavaScript objects
-    // logic to edit notes
-    for (let index = 0; index < notes.length; index++) {
-      const element = notes[index];
-      if (element._id === id) {
-        element.title = title
-        element.description = description
-        element.tag = tag
+    console.log(json)
+    const newNotes = notes.map((note) => {
+      if (note._id === id) {
+          return {...note , title , description , tag} ;
       }
-    }
+      return note;
+  });
+  // logic to edit in client
+    setNotes((prev)=>newNotes)
+
   }
   // Delete a note
   const deleteNote =async (id) => {
@@ -113,7 +106,7 @@ const NoteState = (props) => {
     setNotes(newNote)
   }
   return (
-    <noteContext.Provider value={{ mode, updateMode, notes, addNote, deleteNote , getNotes}}>
+    <noteContext.Provider value={{ mode, updateMode, notes, addNote, deleteNote , getNotes,editNote}}>
       {props.children}
     </noteContext.Provider>
   );

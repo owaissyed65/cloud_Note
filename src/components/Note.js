@@ -4,20 +4,26 @@ import AddNote from './AddNote'
 import Noteitem from './Noteitem'
 const Note = () => {
   const context = useContext(noteContext)
-  const { notes, getNotes } = context
+  const { notes, getNotes,editNote } = context
    
   useEffect(() => {
     getNotes()
     // eslint-disable-next-line 
   }, []);
+  // useref use as element of location
   const ref = useRef(null)
-  const [note, setNote] = useState({etitle:"",edesc:"",etag:""});
+  const refClose = useRef(null)
+
+  const [note, setNote] = useState({id:"",etitle:"",edesc:"",etag:""});
   const updateNote = (updateNote) => {
     ref.current.click()
-    setNote({ etitle:updateNote.title,edesc:updateNote.description, etag:updateNote.tag})
+    setNote({id:updateNote._id,etitle:updateNote.title,edesc:updateNote.description, etag:updateNote.tag})
   }
+  
   const handleClick = (event) =>{
-    event.preventDefault()
+    editNote(note.id,note.etitle,note.edesc,note.etag)
+
+    refClose.current.click()
     
 }
 const onChange = (event) => {
@@ -56,14 +62,15 @@ const onChange = (event) => {
             </div>
           </div>
           <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" className="btn btn-primary">Save changes</button>
+            <button type="button" ref={refClose} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button disabled={note.etitle.length<3 || note.edesc.length<5} type="button" className="btn btn-primary" onClick={handleClick}>Save changes</button>
           </div>
         </div>
       </div>
     </div>
     <div className='row my-3'>
       <h1>Your Notes</h1>
+      <div className="container mx-2">{notes.length===0 && 'No notes to dispay'}</div>
       {notes.map((note) => {
         return <Noteitem note={note} key={note._id} updateNote={updateNote} />
       })}
