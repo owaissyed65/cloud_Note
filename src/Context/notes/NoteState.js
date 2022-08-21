@@ -76,7 +76,6 @@ const NoteState = (props) => {
       body: JSON.stringify({ title, description, tag })
     });
     const json = response.json(); // parses JSON response into native JavaScript objects
-    console.log(json)
     const newNotes = notes.map((note) => {
       if (note._id === id) {
           return {...note , title , description , tag} ;

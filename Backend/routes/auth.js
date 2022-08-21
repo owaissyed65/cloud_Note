@@ -12,15 +12,17 @@ router.post("/createuser" ,[
     body('email','Enter a valid email').isEmail(),
     body('password','Enter a valid Password').isLength({ min: 5 }),
 ] ,async(req,res)=>{
-  
+  let success;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    success = false
     return res.status(400).json({ errors: errors.array() });
   }
   try {
     // if there are error occurred
   let user = await User.findOne({email : req.body.email})
   if(user){
+    success = false
     return res.status(400).json({error:"Sorry user with same email already exist"})
   }
 
@@ -45,7 +47,8 @@ router.post("/createuser" ,[
       }
     }
     const authentication = jwt.sign(data,JWT_Token)
-    res.send({authentication})
+    success = true
+    res.json({success,authentication})
   } catch (error) {
     console.error(error.message)
     res.status(500).send("Some error occured")
@@ -64,12 +67,15 @@ router.post("/login" , [
 
   const { email,password } = req.body;
   let user = await User.findOne({email})
+  let success;
   try {
     if (!user) {
+     success = false;
       return res.status(400).json({error:"Please enter correct password or email"})
     }
     let userPassword = await bcrypt.compare(password,user.password)
     if (!userPassword) {
+      success = false
       return res.status(400).json({error:"Please enter correct password or email"})
     }
     const data = {
@@ -78,7 +84,8 @@ router.post("/login" , [
       }
     }    
     const authentication = jwt.sign(data,JWT_Token)
-    res.send({authentication})
+    success = true
+    res.json({success:true,authentication})
   } catch (error) {
     console.error(error.message)
     res.status(500).send("Internal Server Occurred")    

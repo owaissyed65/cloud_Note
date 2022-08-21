@@ -26,8 +26,8 @@ const Navbar = () => {
                             <input className="form-check-input " type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={updateMode} />
                             <label className="form-check-label" style={{ color: `${mode.color}` }} htmlFor="flexSwitchCheckDefault">{mode.text}</label>
                         </div>
-                        <Link class="btn btn-primary mx-1" to="/login" role="button">Login</Link>
-                        <Link class="btn btn-primary mx-1" to="/signup" role="button">Signup</Link>
+                        <Link className="btn btn-primary mx-1" to="/login" role="button">Login</Link>
+                        <Link className="btn btn-primary mx-1" to="/signup" role="button">Signup</Link>
                     </div>
                 </div>
             </nav>
