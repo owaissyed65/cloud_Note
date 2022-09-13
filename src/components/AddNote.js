@@ -3,7 +3,7 @@ import noteContext from '../Context/notes/noteContext'
 const AddNote = (props) => {
     const [note, setNote] = useState({title:"",desc:"",tag:""});
     const context = useContext(noteContext);
-    const {addNote,updateMode, mode } = context ;
+    const {addNote, mode } = context ;
     
     const handleClick = (event) =>{
         event.preventDefault()

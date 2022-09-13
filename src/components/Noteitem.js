@@ -3,7 +3,7 @@ import '../CSS/Set.css'
 import noteContext from '../Context/notes/noteContext'
 const Noteitem = (props) => {
     const context = useContext(noteContext);
-    const { deleteNote ,updateMode, mode} = context
+    const { deleteNote , mode} = context
     const { note,updateNote } = props
     return (
         <div className='col-md-3 my-3'>            

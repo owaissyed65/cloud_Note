@@ -1,10 +1,15 @@
 import React, { useContext } from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import noteContext from '../Context/notes/noteContext';
 import "../CSS/Set.css"
 const Navbar = () => {
     const context = useContext(noteContext)
     const { updateMode, mode } = context;
+    let navigate = useNavigate()
+    const handleLogout = () =>{
+    localStorage.removeItem('token')
+        navigate('/login')
+    }
     return (
         <>
             <nav className="navbar navbar-expand-lg sticky-top" style={{ backgroundColor: `${mode.backgroundColor}` }}>
@@ -26,8 +31,13 @@ const Navbar = () => {
                             <input className="form-check-input " type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={updateMode} />
                             <label className="form-check-label" style={{ color: `${mode.color}` }} htmlFor="flexSwitchCheckDefault">{mode.text}</label>
                         </div>
+
+                            {!localStorage.getItem('token')?<>
                         <Link className="btn btn-primary mx-1" to="/login" role="button">Login</Link>
                         <Link className="btn btn-primary mx-1" to="/signup" role="button">Signup</Link>
+                            </>:<button className='btn btn-primary' onClick={handleLogout}>Logout</button>}
+
+
                     </div>
                 </div>
             </nav>
