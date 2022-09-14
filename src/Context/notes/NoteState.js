@@ -1,9 +1,11 @@
 import React, { useState } from "react";
+// import { useEffect } from "react";
 import noteContext from "./noteContext";
 const NoteState = (props) => {
   const host = "http://localhost:5000"
   let initalNotes = []
   // all states
+  const [details, setDetails] = useState({ name: '', email: '' });
   const [notes, setNotes] = useState(initalNotes);
   const [mode, setMode] = useState({
     color: "black",
@@ -29,10 +31,22 @@ const NoteState = (props) => {
       })
     }
   }
+  // get data of user
+  const getData = async () => {
+    const res = await fetch(`${host}/api/notes/getuserdata`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      },
+    });
+    const info = await res.json();
+    setDetails({ name: info.name, email: info.email })
+  }
+
   // get notes
   const getNotes = async () => {
     // Api calls
-    
     const response = await fetch(`${host}/api/notes/fetchallnotes`, {
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
       headers: {
@@ -41,11 +55,10 @@ const NoteState = (props) => {
       },
     });
     const note = await response.json()
-    console.log(note)
     setNotes(note)
   }
   // Create a notes
-  const addNote = async (title, description, tag,id) => {
+  const addNote = async (title, description, tag, id) => {
     // Api calls
     const response = await fetch(`${host}/api/notes/addnote`, {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -57,9 +70,9 @@ const NoteState = (props) => {
 
       body: JSON.stringify({ title, description, tag })
     });
-    const note =await response.json()
+    const note = await response.json()
     //logic to add note
-    // console.log("Adding a notes")
+
     setNotes(notes.concat(note))
 
   }
@@ -76,19 +89,19 @@ const NoteState = (props) => {
 
       body: JSON.stringify({ title, description, tag })
     });
-    const json = response.json(); // parses JSON response into native JavaScript objects
+    await response.json(); // parses JSON response into native JavaScript objects
     const newNotes = notes.map((note) => {
       if (note._id === id) {
-          return {...note , title , description , tag} ;
+        return { ...note, title, description, tag };
       }
       return note;
-  });
-  // logic to edit in client
-    setNotes((prev)=>newNotes)
+    });
+    // logic to edit in client
+    setNotes((prev) => newNotes)
 
   }
   // Delete a note
-  const deleteNote =async (id) => {
+  const deleteNote = async (id) => {
     // api call
     const response = await fetch(`${host}/api/notes/deltnote/${id}`, {
       method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
@@ -98,15 +111,13 @@ const NoteState = (props) => {
         'Authorization': localStorage.getItem('token')
       }
     });
-    const json = response.json(); // parses JSON response into native JavaScript objects
-    console.log(json)
+    await response.json(); // parses JSON response into native JavaScript objects
     // logic dlt note
-    console.log("deleting notes with id" + id)
     const newNote = notes.filter((note) => { return note._id !== id })
     setNotes(newNote)
   }
   return (
-    <noteContext.Provider value={{ mode, updateMode, notes, addNote, deleteNote , getNotes,editNote}}>
+    <noteContext.Provider value={{ mode, updateMode, notes, addNote, deleteNote, getNotes, editNote, details, setDetails, getData }}>
       {props.children}
     </noteContext.Provider>
   );

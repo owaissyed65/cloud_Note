@@ -1,8 +1,8 @@
 import React from 'react'
 
 const About = () => {
-  
-    return (
+
+  return (
     <div>
     </div>
   )

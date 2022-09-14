@@ -10,14 +10,24 @@ router.get("/fetchallnotes", fetchuser,
         try {
 
             const notes = await Note.find({ userId: req.user });
-            res.json(notes)
-            const user = await User.findOne({ _id: req.verifyUser._id })
+            res.status(201).json(notes)
 
         } catch (error) {
             console.error(error.message)
             res.status(500).send("Some error occured")
         }
     })
+// router to get information 
+router.get('/getuserdata', fetchuser, async (req, res) => {
+    try {
+        const user = await User.findOne({ _id: req.verifyUser._id })
+        res.status(201).json(user)
+
+    } catch (error) {
+        console.log(error)
+        res.status(500)
+    }
+})
 //Route :2 Add the notes : http://localhost:5000/api/notes/addnote
 router.post("/addnote", fetchuser,
     [
@@ -31,9 +41,7 @@ router.post("/addnote", fetchuser,
             return res.status(400).json({ errors: errors.array() });
         }
         try {
-            console.log(req.verifyUser)
             const { title, description, tag } = req.body;
-            console.log(req.user)
             const note = await Note.create({
                 userId: req.user,
                 title: title,
@@ -66,7 +74,7 @@ router.put("/updatenote/:id", fetchuser,
             }
             // allow the user to update its own note
             let note = await Note.findById(req.params.id)
-            console.log(note)
+
             if (!note) { return res.status(401).send('not found') }
             if (note.userId.toString() !== req.user._id) {
                 return res.status(402).send('not found')

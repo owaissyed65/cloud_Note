@@ -13,8 +13,6 @@ router.post("/createuser", [
   body('password', 'Enter a valid Password').isLength({ min: 5 }),
 ], async (req, res) => {
   let success;
-  console.log(req.email)
-  console.log(req.name)
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     success = false
@@ -27,7 +25,6 @@ router.post("/createuser", [
       success = false
       return res.status(400).json({ error: "Sorry user with same email already exist" })
     }
-    console.log("User Exist" +userExist)
     const salt = await bcrypt.genSalt(10);
     const secPass = await bcrypt.hashSync(req.body.password, salt)
     // create new user
@@ -36,7 +33,6 @@ router.post("/createuser", [
       password: secPass,
       email: req.body.email,
     })
-    console.log("HEllo" + user._id)
     const authentication = jwt.sign({ _id: user._id }, JWT_Token)
     success = true
     res.json({ success, authentication, user })
@@ -61,8 +57,6 @@ router.post("/login", [
     let userIfPresent = await User.findOne({ email: email })
     let success;
 
-    console.log(userIfPresent)
-
     if (!userIfPresent) {
       success = false;
       return res.status(400).json({ error: "Please enter correct password or email" })
@@ -73,10 +67,10 @@ router.post("/login", [
       success = false
       return res.status(400).json({ error: "Please enter correct password or email" })
     }
-    
-    const authentication = jwt.sign({_id:userIfPresent._id}, JWT_Token)
+
+    const authentication = jwt.sign({ _id: userIfPresent._id }, JWT_Token)
     success = true
-    res.json({ success: true, authentication:authentication,userIfPresent:userIfPresent })
+    res.json({ success: true, authentication: authentication, userIfPresent: userIfPresent })
   } catch (error) {
     console.error(error.message)
     res.status(500).send("Internal Server Occurred")
@@ -87,8 +81,7 @@ router.post('/getuser', fetchuser
   , async (req, res) => {
     try {
       const userId = req.user;
-      console.log(userId)
-      const user = await User.findById({_id:userId._id }).select("-password");
+      const user = await User.findById({ _id: userId._id }).select("-password");
       res.send(user)
     } catch (error) {
       console.error(error.message)

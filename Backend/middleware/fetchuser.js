@@ -1,18 +1,16 @@
 const jwt = require('jsonwebtoken');
-const JWT_Token="L@veThi$Girl"
+const JWT_Token = "L@veThi$Girl"
 const User = require('../models/User')
-const fetchuser = async (req,res,next)=>{
+const fetchuser = async (req, res, next) => {
     try {
-        let token =await req.header('Authorization');
-        if (!token) {                                   
+        let token = await req.header('Authorization');
+        if (!token) {
             res.status(401).send("please authorize using valid authentication");
         }
-        const data = jwt.verify(token,JWT_Token)
-        const userVerify = await User.findOne({_id:data._id})
-        console.log(userVerify)
-        console.log(data._id)
+        const data = jwt.verify(token, JWT_Token);
+        const userVerify = await User.findOne({ _id: data._id });
         req.user = data;
-        req.verifyUser = userVerify
+        req.verifyUser = userVerify;
         next()
     } catch (error) {
         console.log(error)

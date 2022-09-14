@@ -50,7 +50,7 @@ const Signup = (props) => {
         <div className="mb-3">
           <label style={{ color: `${mode.color}` }} htmlFor="email" className="form-label">Email address</label>
           <input type="email" className="form-control" id="email" name='email' aria-describedby="emailHelp" onChange={onChange} value={email} />
-          <div id="emailHelp" className="form-text"style={{ color: `${mode.color==='grey'?'white':'grey'}` }}>We'll never share your email with anyone else.</div>
+          <div id="emailHelp" className="form-text" style={{ color: `${mode.color === 'grey' ? 'white' : 'grey'}` }}>We'll never share your email with anyone else.</div>
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label" style={{ color: `${mode.color}` }}>Password</label>

@@ -6,8 +6,8 @@ const Navbar = () => {
     const context = useContext(noteContext)
     const { updateMode, mode } = context;
     let navigate = useNavigate()
-    const handleLogout = () =>{
-    localStorage.removeItem('token')
+    const handleLogout = () => {
+        localStorage.removeItem('token')
         navigate('/login')
     }
     return (
@@ -32,10 +32,10 @@ const Navbar = () => {
                             <label className="form-check-label" style={{ color: `${mode.color}` }} htmlFor="flexSwitchCheckDefault">{mode.text}</label>
                         </div>
 
-                            {!localStorage.getItem('token')?<>
-                        <Link className="btn btn-primary mx-1" to="/login" role="button">Login</Link>
-                        <Link className="btn btn-primary mx-1" to="/signup" role="button">Signup</Link>
-                            </>:<button className='btn btn-primary' onClick={handleLogout}>Logout</button>}
+                        {!localStorage.getItem('token') ? <>
+                            <Link className="btn btn-primary mx-1" to="/login" role="button">Login</Link>
+                            <Link className="btn btn-primary mx-1" to="/signup" role="button">Signup</Link>
+                        </> : <button className='btn btn-primary' onClick={handleLogout}>Logout</button>}
 
 
                     </div>
